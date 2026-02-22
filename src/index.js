@@ -16,20 +16,21 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { messageUrl, emojiReact } = req.body;
+  const { newsletterId, messageId, emojiReact } = req.body;
 
-  if (!messageUrl) {
+  if (!newsletterId || !messageId) {
     return res.status(400).json({ 
       success: false, 
-      error: 'messageUrl is required',
-      hint: 'Send { "messageUrl": "...", "emojiReact": "🔥" }'
+      error: 'newsletterId and messageId are required',
+      hint: 'Send { "newsletterId": "...@newsletter", "messageId": "123", "emojiReact": "🔥" }'
     });
   }
 
   console.log('========================================');
   console.log('[🔥 NEW REACTION REQUEST]');
   console.log('Time:', new Date().toISOString());
-  console.log('Message URL:', messageUrl);
+  console.log('Newsletter ID:', newsletterId);
+  console.log('Message ID:', messageId);
   console.log('Emoji React:', emojiReact || '🔥 (default)');
   console.log('========================================');
 
@@ -37,7 +38,8 @@ module.exports = async (req, res) => {
     success: true,
     message: 'Reaction triggered!',
     received: {
-      messageUrl,
+      newsletterId,
+      messageId,
       emojiReact: emojiReact || '🔥',
       time: new Date().toISOString()
     }
