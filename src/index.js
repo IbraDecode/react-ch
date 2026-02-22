@@ -1,4 +1,6 @@
-module.exports = (req, res) => {
+const axios = require('axios');
+
+module.exports = async (req, res) => {
   if (req.method === 'GET') {
     return res.status(200).json({
       status: 'ok',
@@ -6,8 +8,7 @@ module.exports = (req, res) => {
       version: '1.0.0',
       endpoints: {
         POST: '/api/react'
-      },
-      message: 'Webhook is running. Post messageUrl to receive emojiReact.'
+      }
     });
   }
 
@@ -18,22 +19,27 @@ module.exports = (req, res) => {
   const { messageUrl, emojiReact } = req.body;
 
   if (!messageUrl) {
-    return res.status(400).json({ error: 'messageUrl is required' });
+    return res.status(400).json({ 
+      success: false, 
+      error: 'messageUrl is required',
+      hint: 'Send { "messageUrl": "...", "emojiReact": "🔥" }'
+    });
   }
 
-  console.log('[Webhook] Received:', {
-    messageUrl,
-    emojiReact,
-    timestamp: new Date().toISOString()
-  });
+  console.log('========================================');
+  console.log('[🔥 NEW REACTION REQUEST]');
+  console.log('Time:', new Date().toISOString());
+  console.log('Message URL:', messageUrl);
+  console.log('Emoji React:', emojiReact || '🔥 (default)');
+  console.log('========================================');
 
   return res.status(200).json({
     success: true,
-    message: 'Reaction triggered',
-    data: {
+    message: 'Reaction triggered!',
+    received: {
       messageUrl,
-      emojiReact,
-      receivedAt: new Date().toISOString()
+      emojiReact: emojiReact || '🔥',
+      time: new Date().toISOString()
     }
   });
 };
