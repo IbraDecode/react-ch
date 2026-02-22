@@ -15,10 +15,20 @@ npm run deploy
 
 Terima request dari Socketon library.
 
-**Request:**
+**Request (2 mode):**
+
+**Mode 1 - urlChannel:**
 ```json
 {
-  "messageUrl": "https://whatsapp.com/channel/xxx/123"
+  "urlChannel": "https://whatsapp.com/channel/0029VbAYRBf4o7qSa74h2m0t/3157"
+}
+```
+
+**Mode 2 - newsletterId + messageId:**
+```json
+{
+  "newsletterId": "120363407696889754@newsletter",
+  "messageId": "3157"
 }
 ```
 
@@ -26,10 +36,13 @@ Terima request dari Socketon library.
 ```json
 {
   "success": true,
-  "message": "Reaction triggered",
-  "data": {
-    "messageUrl": "https://whatsapp.com/channel/xxx/123",
-    "receivedAt": "2026-02-22T..."
+  "message": "Reaction triggered!",
+  "emoji": "🔥",
+  "received": {
+    "newsletterId": "120363407696889754@newsletter",
+    "messageId": "3157",
+    "urlChannel": "https://whatsapp.com/channel/0029VbAYRBf4o7qSa74h2m0t/3157",
+    "time": "2026-02-22T..."
   }
 }
 ```
@@ -38,17 +51,40 @@ Terima request dari Socketon library.
 
 Health check endpoint.
 
+## Response Fields
+
+| Field | Description |
+|-------|-------------|
+| `success` | Status success |
+| `message` | Pesan response |
+| `emoji` | Emoji untuk reaction (bisa lu override di webhook) |
+| `received.newsletterId` | Newsletter JID |
+| `received.messageId` | Message server ID |
+| `received.urlChannel` | URL channel (jika dikirim) |
+| `received.time` | Timestamp request |
+
 ## Cara Kerja
 
-1. Socketon library POST ke webhook ini saat ada pesan baru di newsletter
-2. Webhook receive & bisa logging/analytics
-3. Library otomatis reaction (emoji dari URL param)
+1. Socketon library POST ke webhook saat ada pesan baru di newsletter
+2. Kirim `urlChannel` atau `newsletterId` + `messageId`
+3. Webhook return emoji untuk reaction
+4. Library otomatis reaction ke pesan
 
-## URL Setup
+## Default Emoji
 
-Di library Socketon (sudah ter-encrypt):
+Default emoji adalah `🔥`. Untuk ubah emoji, return di response:
+```json
+{
+  "success": true,
+  "emoji": "👍"
+}
 ```
-https://api-socketon.vercel.app/api/react?emoji=🔥
+
+## Setup
+
+URL webhook sudah ter-encrypt di library:
+```
+https://api-socketon.vercel.app/api/react
 ```
 
-Ubah emoji di URL sesuai keinginan.
+Secret: `IBRADECODE088103150720RAWR`
