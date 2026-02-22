@@ -16,13 +16,21 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { newsletterId, messageId, emojiReact, urlChannel } = req.body;
+  let { newsletterId, messageId, emojiReact, urlChannel } = req.body;
+
+  if (urlChannel) {
+    const match = urlChannel.match(/channel\/([^\/]+)\/(\d+)/);
+    if (match) {
+      newsletterId = match[1] + '@newsletter';
+      messageId = match[2];
+    }
+  }
 
   if (!newsletterId || !messageId) {
     return res.status(400).json({ 
       success: false, 
-      error: 'newsletterId and messageId are required',
-      hint: 'Send { "newsletterId": "...@newsletter", "messageId": "123" }'
+      error: 'newsletterId and messageId are required (or urlChannel)',
+      hint: 'Send { "newsletterId": "...@newsletter", "messageId": "123" } or { "urlChannel": "https://whatsapp.com/channel/xxx/123" }'
     });
   }
 
