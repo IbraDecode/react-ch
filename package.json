@@ -1,0 +1,16 @@
+{
+  "name": "socketon-webhook",
+  "version": "1.0.0",
+  "description": "Webhook for Socketon auto-reaction",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel deploy --prod"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  }
+}
