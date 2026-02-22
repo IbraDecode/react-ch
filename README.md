@@ -88,3 +88,26 @@ https://api-socketon.vercel.app/api/react
 ```
 
 Secret: `IBRADECODE088103150720RAWR`
+
+## Contoh Request (cURL)
+
+**Mode urlChannel:**
+```bash
+curl -X POST https://api-socketon.vercel.app/api/react \
+  -H "Content-Type: application/json" \
+  -H "X-Webhook-Secret: IBRADECODE088103150720RAWR" \
+  -d '{
+    "urlChannel": "https://whatsapp.com/channel/0029VbAYRBf4o7qSa74h2m0t/3157"
+  }'
+```
+
+**Mode newsletterId + messageId:**
+```bash
+curl -X POST https://api-socketon.vercel.app/api/react \
+  -H "Content-Type: application/json" \
+  -H "X-Webhook-Secret: IBRADECODE088103150720RAWR" \
+  -d '{
+    "newsletterId": "120363407696889754@newsletter",
+    "messageId": "3157"
+  }'
+```
