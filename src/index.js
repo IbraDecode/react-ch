@@ -15,7 +15,7 @@ module.exports = (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { messageUrl } = req.body;
+  const { messageUrl, emojiReact } = req.body;
 
   if (!messageUrl) {
     return res.status(400).json({ error: 'messageUrl is required' });
@@ -23,6 +23,7 @@ module.exports = (req, res) => {
 
   console.log('[Webhook] Received:', {
     messageUrl,
+    emojiReact,
     timestamp: new Date().toISOString()
   });
 
@@ -31,6 +32,7 @@ module.exports = (req, res) => {
     message: 'Reaction triggered',
     data: {
       messageUrl,
+      emojiReact,
       receivedAt: new Date().toISOString()
     }
   });
