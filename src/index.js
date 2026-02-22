@@ -22,25 +22,27 @@ module.exports = async (req, res) => {
     return res.status(400).json({ 
       success: false, 
       error: 'newsletterId and messageId are required',
-      hint: 'Send { "newsletterId": "...@newsletter", "messageId": "123", "emojiReact": "🔥" }'
+      hint: 'Send { "newsletterId": "...@newsletter", "messageId": "123" }'
     });
   }
+
+  const emoji = emojiReact || '🔥';
 
   console.log('========================================');
   console.log('[🔥 NEW REACTION REQUEST]');
   console.log('Time:', new Date().toISOString());
   console.log('Newsletter ID:', newsletterId);
   console.log('Message ID:', messageId);
-  console.log('Emoji React:', emojiReact || '🔥 (default)');
+  console.log('Emoji:', emoji);
   console.log('========================================');
 
   return res.status(200).json({
     success: true,
     message: 'Reaction triggered!',
+    emoji: emoji,
     received: {
       newsletterId,
       messageId,
-      emojiReact: emojiReact || '🔥',
       time: new Date().toISOString()
     }
   });
